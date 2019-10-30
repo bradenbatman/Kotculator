@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Kotculator</title>
+</head>
+<body class="bg-secondary">
+
+<div class="card text-light bg-dark">
+    <h1 class="text-center">Kotculator</h1>
+    <p class="text-center">A Calculator made with KotlinJS</p>
+</div>
+
+<div class="container w-75">
+    <div class="row justify-content-center align-items-stretch" >
+        <div class="col p-1 mt-2">
+            <h1 class="card text-black bg-white text-right" id="display">0</h1>
+        </div>
+
+    </div>
+
+    <div class="row justify-content-center align-items-stretch" >
+        <div class="col p-1">
+            <button id="Ibutton" type = "button" class="btn btn-danger btn-block">I</button>
+        </div>
+        <div class="col p-1">
+            <button id="sinbutton" type = "button" class="btn btn-dark btn-block">sin</button>
+        </div>
+        <div class="col p-1">
+            <button id="cosbutton" type = "button" class="btn btn-dark btn-block">cos</button>
+        </div>
+        <div class="col p-1">
+            <button id="tanbutton" type = "button" class="btn btn-dark btn-block">tan</button>
+        </div>
+        <div class="col p-1">
+            <button id="Cbutton" type = "button" class="btn btn-warning btn-block">C</button>
+        </div>
+    </div>
+
+    <div class="row justify-content-center align-items-stretch" >
+        <div class="col p-1">
+            <button id="IIbutton" type = "button" class="btn btn-danger btn-block">II</button>
+        </div>
+        <div class="col p-1">
+            <button id="asinbutton" type = "button" class="btn btn-dark btn-block">asin</button>
+        </div>
+        <div class="col p-1">
+            <button id="acosbutton" type = "button" class="btn btn-dark btn-block">acos</button>
+        </div>
+        <div class="col p-1">
+            <button id="atanbutton" type = "button" class="btn btn-dark btn-block">atan</button>
+        </div>
+        <div class="col p-1">
+            <button id="CEbutton" type = "button" class="btn btn-warning btn-block">CE</button>
+        </div>
+    </div>
+
+    <div class="row justify-content-center align-items-stretch" >
+        <div class="col p-1">
+            <button id="IIIbutton" type = "button" class="btn btn-danger btn-block">III</button>
+        </div>
+        <div class="col p-1">
+            <button id="recipbutton" type = "button" class="btn btn-dark btn-block">1/x</button>
+        </div>
+        <div class="col p-1">
+            <button id="sqbutton" type = "button" class="btn btn-dark btn-block">x^y</button>
+        </div>
+        <div class="col p-1">
+            <button id="sqrtbutton" type = "button" class="btn btn-dark btn-block">sqrt</button>
+        </div>
+        <div class="col p-1">
+            <button id="+button" type = "button" class="btn btn-info btn-block">+</button>
+        </div>
+    </div>
+
+    <div class="row justify-content-center align-items-stretch" >
+        <div class="col p-1">
+            <button id="IVbutton" type = "button" class="btn btn-danger btn-block">IV</button>
+        </div>
+        <div class="col p-1">
+            <button id="1button" type = "button" class="btn btn-light btn-block">1</button>
+        </div>
+        <div class="col p-1">
+            <button id="2button" type = "button" class="btn btn-light btn-block">2</button>
+        </div>
+        <div class="col p-1">
+            <button id="3button" type = "button" class="btn btn-light btn-block">3</button>
+        </div>
+        <div class="col p-1">
+            <button id="-button" type = "button" class="btn btn-info btn-block">-</button>
+        </div>
+    </div>
+
+    <div class="row justify-content-center align-items-stretch" >
+        <div class="col p-1">
+            <button id="Vbutton" type = "button" class="btn btn-danger btn-block">V</button>
+        </div>
+        <div class="col p-1">
+            <button id="4button" type = "button" class="btn btn-light btn-block">4</button>
+        </div>
+        <div class="col p-1">
+            <button id="5button" type = "button" class="btn btn-light btn-block">5</button>
+        </div>
+        <div class="col p-1">
+            <button id="6button" type = "button" class="btn btn-light btn-block">6</button>
+        </div>
+        <div class="col p-1">
+            <button id="xbutton" type = "button" class="btn btn-info btn-block">x</button>
+        </div>
+    </div>
+
+    <div class="row justify-content-center align-items-stretch" >
+        <div class="col p-1">
+            <button id="VIbutton" type = "button" class="btn btn-danger btn-block">VI</button>
+        </div>
+        <div class="col p-1">
+            <button id="7button" type = "button" class="btn btn-light btn-block">7</button>
+        </div>
+        <div class="col p-1">
+            <button id="8button" type = "button" class="btn btn-light btn-block">8</button>
+        </div>
+        <div class="col p-1">
+            <button id="9button" type = "button" class="btn btn-light btn-block">9</button>
+        </div>
+        <div class="col p-1">
+            <button id="/button" type = "button" class="btn btn-info btn-block">/</button>
+        </div>
+    </div>
+
+    <div class="row justify-content-center align-items-stretch" >
+        <div class="col p-1">
+            <button id="VIIbutton" type = "button" class="btn btn-danger btn-block">VII</button>
+        </div>
+        <div class="col p-1">
+            <button id="pnbutton" type = "button" class="btn btn-dark btn-block">+/-</button>
+        </div>
+        <div class="col p-1">
+            <button id="0button" type = "button" class="btn btn-light btn-block">0</button>
+        </div>
+        <div class="col p-1">
+            <button id=".button" type = "button" class="btn btn-dark btn-block">.</button>
+        </div>
+        <div class="col p-1">
+            <button id="=button" type = "button" class="btn btn-info btn-block">=</button>
+        </div>
+    </div>
+
+</body>
+
+<script src="out/production/Kotculator/lib/kotlin.js"></script>
+<script src="out/production/Kotculator/Kotculator.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</html>
