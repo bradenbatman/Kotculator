@@ -1,10 +1,10 @@
 import kotlin.math.*
 
-
 class Calculator {
-    private var workingNum: String = "0"
+    private var displayVal: String = "0"
     private var memorySpots = arrayOfNulls<String>(7)
     private var memorySpotsFull = BooleanArray(7)
+    private var currentOperation: Operation = Operation.Add(0.0)
 
     sealed class Operation{
         class Add(val firstVal: Double) : Operation()
@@ -12,80 +12,101 @@ class Calculator {
         class Multiply(val firstVal: Double) : Operation()
         class Divide(val firstVal: Double) : Operation()
         class Exponent(val firstVal: Double) : Operation()
-        class Sin(): Operation()
-        class Cos(): Operation()
-        class Tan(): Operation()
-        class ASin(): Operation()
-        class ACos(): Operation()
-        class ATan(): Operation()
-        class Reciprocal(): Operation()
-        class SquareRoot(): Operation()
+        object Sin: Operation()
+        object Cos: Operation()
+        object Tan: Operation()
+        object ASin: Operation()
+        object ACos: Operation()
+        object ATan: Operation()
+        object Reciprocal: Operation()
+        object SquareRoot: Operation()
     }
 
-    fun eval(secondVal:Double, op:Operation) = when(op){
-        is Operation.Add -> {workingNum = (op.firstVal + secondVal).toString()}
-        is Operation.Subtract -> {workingNum = (op.firstVal - secondVal).toString()}
-        is Operation.Multiply -> {workingNum = (op.firstVal * secondVal).toString()}
-        is Operation.Divide -> {workingNum = (op.firstVal / secondVal).toString()}
-        is Operation.Exponent -> {workingNum = (op.firstVal.pow(secondVal)).toString()}
-        is Operation.Sin -> {workingNum = (sin(secondVal)).toString()}
-        is Operation.Cos -> {workingNum = (cos(secondVal)).toString()}
-        is Operation.Tan -> {workingNum = (tan(secondVal)).toString()}
-        is Operation.ASin -> {workingNum = (asin(secondVal)).toString()}
-        is Operation.ACos -> {workingNum = (acos(secondVal)).toString()}
-        is Operation.ATan -> {workingNum = (atan(secondVal)).toString()}
-        is Operation.Reciprocal -> {workingNum = (1/secondVal).toString()}
-        is Operation.SquareRoot -> {workingNum = (sqrt(secondVal)).toString()}
+    private fun evalCurrentOperation(secondVal:Double, op:Operation) = when(op){
+        is Operation.Add -> {displayVal = "${op.firstVal + secondVal}"}
+        is Operation.Subtract -> {displayVal = "${op.firstVal - secondVal}"}
+        is Operation.Multiply -> {displayVal = "${op.firstVal * secondVal}"}
+        is Operation.Divide -> {displayVal = "${op.firstVal / secondVal}"}
+        is Operation.Exponent -> {displayVal = "${op.firstVal.pow(secondVal)}"}
+        is Operation.Sin -> {displayVal = "${sin(secondVal)}"}
+        is Operation.Cos -> {displayVal = "${cos(secondVal)}"}
+        is Operation.Tan -> {displayVal = "${tan(secondVal)}"}
+        is Operation.ASin -> {displayVal = "${asin(secondVal)}"}
+        is Operation.ACos -> {displayVal = "${acos(secondVal)}"}
+        is Operation.ATan -> {displayVal = "${atan(secondVal)}"}
+        is Operation.Reciprocal -> {displayVal = "${1/secondVal}"}
+        is Operation.SquareRoot -> {displayVal = "${sqrt(secondVal)}"}
+    }
+
+    fun eval(){
+        evalCurrentOperation(displayVal.toDouble(), currentOperation)
+        clearCurrentOperation()
+    }
+
+    fun setCurrentOperation(op: Operation){
+        currentOperation = op
+    }
+
+    private fun clearCurrentOperation(){
+        currentOperation = Operation.Add(0.0)
     }
 
     fun clearEntry(){
-        workingNum = "0"
+        displayVal = "0"
     }
 
-    fun getWorkingNum():String{
-        return workingNum
+    fun clear(){
+        clearEntry()
+        clearCurrentOperation()
     }
 
     fun isMemorySpotFull(spot:Int):Boolean{
         return memorySpotsFull[spot]
     }
+
     fun setMemorySpot(spot:Int){
-        memorySpots[spot] = workingNum
-        memorySpotsFull[spot] = true
+        memorySpots[spot] = displayVal
+        memorySpotsFull[spot]=true
     }
 
     fun clearMemorySpot(spot: Int){
-        workingNum = memorySpots[spot].toString()
+        displayVal = "${memorySpots[spot]}"
         memorySpotsFull[spot]=false
     }
 
+    fun getDisplayVal():String{
+        return displayVal
+    }
+
     fun enterNextNumber(nextNumber:Int){
-        //if the value starts with 0 and isn't followed by a period, replace the zero
-        if ((workingNum.startsWith("0") && !workingNum.startsWith("0.")) || workingNum.toDouble().isNaN() || workingNum.toDouble().isInfinite()){
-            workingNum = nextNumber.toString()
-        }
-        //else if the value starts with -0 and isn't followed by a period, replace the zero, keeping the sign
-        else if (workingNum.startsWith("-0") && !workingNum.startsWith("-0.")){
-            workingNum = "-" + nextNumber.toString()
-        }
-        //add the number to the end (value doesn't start with 0 or -0 without a period)
-        else{
-            workingNum = workingNum + nextNumber.toString()
-        }
+        displayVal =
+                //displayVal is replaced with the new number if displayVal is 0, NaN, or Infinity
+                if (displayVal == "0" || displayVal.toDouble().isNaN() || displayVal.toDouble().isInfinite()){
+                    "$nextNumber"
+                }
+                //displayVal is replaced with the new number and keeps the negative sign if displayVal is -0
+                else if (displayVal== "-0"){
+                    "-$nextNumber"
+                }
+                //add the new number to the end of displayVal
+                else{
+                    "$displayVal$nextNumber"
+                }
     }
 
     fun enterDecimal(){
-        if (!workingNum.contains(".")){
-            workingNum = workingNum + "."
+        if (!displayVal.contains(".")){
+            displayVal = "$displayVal."
         }
     }
 
-    fun flipSign(){
-        if(workingNum.startsWith("-")){
-            workingNum = workingNum.substring(1)
-        }
-        else {
-            workingNum = "-" + workingNum
-        }
+    fun negate(){
+        displayVal =
+                if(displayVal.startsWith("-")){
+                    displayVal.substring(1)
+                }
+                else {
+                    "-$displayVal"
+                }
     }
 }

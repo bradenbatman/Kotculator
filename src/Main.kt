@@ -4,20 +4,22 @@ import kotlin.browser.document
 fun main() {
     val calc = Calculator()
     val display = document.getElementById("display")
-    var operation: Calculator.Operation = Calculator.Operation.Add(0.0)
-
-    fun clearOperation(){
-        operation = Calculator.Operation.Add(0.0)
-    }
-
-    fun clear(){
-        clearOperation()
-        calc.clearEntry()
-    }
 
     fun refreshDisplay(){
-        display!!.innerHTML = "<h1>"+ calc.getWorkingNum() +"</h1>"
+        display!!.innerHTML = "<h1>"+ calc.getDisplayVal() +"</h1>"
     }
+
+    //Clear Button
+    (document.getElementById("Cbutton")!!).addEventListener("click", {
+        calc.clear()
+        refreshDisplay()
+    })
+
+    //Clear Entry Button
+    (document.getElementById("CEbutton")!!).addEventListener("click", {
+        calc.clearEntry()
+        refreshDisplay()
+    })
 
     //Memory buttons
     fun pressMemoryButton(spot:Int, button: Element){
@@ -32,28 +34,27 @@ fun main() {
         refreshDisplay()
     }
 
-        (document.getElementById("Ibutton")!!).addEventListener("click", {
-            pressMemoryButton(0, (document.getElementById("Ibutton")!!))
-        })
-        (document.getElementById("IIbutton")!!).addEventListener("click", {
-            pressMemoryButton(1, (document.getElementById("IIbutton")!!))
-        })
-        (document.getElementById("IIIbutton")!!).addEventListener("click", {
-            pressMemoryButton(2, (document.getElementById("IIIbutton")!!))
-        })
-        (document.getElementById("IVbutton")!!).addEventListener("click", {
-            pressMemoryButton(3, (document.getElementById("IVbutton")!!))
-        })
-        (document.getElementById("Vbutton")!!).addEventListener("click", {
-            pressMemoryButton(4, (document.getElementById("Vbutton")!!))
-        })
-        (document.getElementById("VIbutton")!!).addEventListener("click", {
-            pressMemoryButton(5, (document.getElementById("VIbutton")!!))
-        })
-        (document.getElementById("VIIbutton")!!).addEventListener("click", {
-            pressMemoryButton(6, (document.getElementById("VIIbutton")!!))
-        })
-
+    (document.getElementById("Ibutton")!!).addEventListener("click", {
+        pressMemoryButton(0, (document.getElementById("Ibutton")!!))
+    })
+    (document.getElementById("IIbutton")!!).addEventListener("click", {
+        pressMemoryButton(1, (document.getElementById("IIbutton")!!))
+    })
+    (document.getElementById("IIIbutton")!!).addEventListener("click", {
+        pressMemoryButton(2, (document.getElementById("IIIbutton")!!))
+    })
+    (document.getElementById("IVbutton")!!).addEventListener("click", {
+        pressMemoryButton(3, (document.getElementById("IVbutton")!!))
+    })
+    (document.getElementById("Vbutton")!!).addEventListener("click", {
+        pressMemoryButton(4, (document.getElementById("Vbutton")!!))
+    })
+    (document.getElementById("VIbutton")!!).addEventListener("click", {
+        pressMemoryButton(5, (document.getElementById("VIbutton")!!))
+    })
+    (document.getElementById("VIIbutton")!!).addEventListener("click", {
+        pressMemoryButton(6, (document.getElementById("VIIbutton")!!))
+    })
 
     //Number Buttons
     fun pressNumberButton(nextNumber:Int){
@@ -61,6 +62,9 @@ fun main() {
         refreshDisplay()
     }
 
+    (document.getElementById("0button")!!).addEventListener("click", {
+        pressNumberButton(0)
+    })
     (document.getElementById("1button")!!).addEventListener("click", {
         pressNumberButton(1)
     })
@@ -88,85 +92,69 @@ fun main() {
     (document.getElementById("9button")!!).addEventListener("click", {
         pressNumberButton(9)
     })
-    (document.getElementById("0button")!!).addEventListener("click", {
-        pressNumberButton(0)
-    })
-
-    //Clear Button
-    (document.getElementById("Cbutton")!!).addEventListener("click", {
-        clear()
-        refreshDisplay()
-    })
-
-    (document.getElementById("CEbutton")!!).addEventListener("click", {
-        calc.clearEntry()
-        refreshDisplay()
-    })
 
     //basic functions
-    fun doubleNumOperationButton(op: Calculator.Operation){
-        operation = op
+    fun setTwoNumberOperation(op: Calculator.Operation){
+        calc.setCurrentOperation(op)
         calc.clearEntry()
         refreshDisplay()
     }
 
-    fun singleNumOperationButton(op: Calculator.Operation){
-        operation = op
-        calc.eval(calc.getWorkingNum().toDouble(), operation)
-        clearOperation()
+    fun runOneNumberOperation(op: Calculator.Operation){
+        calc.setCurrentOperation(op)
+        calc.eval()
         refreshDisplay()
     }
 
     (document.getElementById("+button")!!).addEventListener("click", {
-        doubleNumOperationButton(Calculator.Operation.Add(calc.getWorkingNum().toDouble()))
+        setTwoNumberOperation(Calculator.Operation.Add(calc.getDisplayVal().toDouble()))
     })
     (document.getElementById("-button")!!).addEventListener("click", {
-        doubleNumOperationButton(Calculator.Operation.Subtract(calc.getWorkingNum().toDouble()))
+        setTwoNumberOperation(Calculator.Operation.Subtract(calc.getDisplayVal().toDouble()))
     })
     (document.getElementById("xbutton")!!).addEventListener("click", {
-        doubleNumOperationButton(Calculator.Operation.Multiply(calc.getWorkingNum().toDouble()))
+        setTwoNumberOperation(Calculator.Operation.Multiply(calc.getDisplayVal().toDouble()))
     })
     (document.getElementById("/button")!!).addEventListener("click", {
-        doubleNumOperationButton(Calculator.Operation.Divide(calc.getWorkingNum().toDouble()))
+        setTwoNumberOperation(Calculator.Operation.Divide(calc.getDisplayVal().toDouble()))
     })
     (document.getElementById("=button")!!).addEventListener("click", {
-        calc.eval(calc.getWorkingNum().toDouble(), operation)
-        clearOperation()
+        calc.eval()
         refreshDisplay()
     })
 
     //other functions
     (document.getElementById("sinbutton")!!).addEventListener("click", {
-        singleNumOperationButton(Calculator.Operation.Sin())
+        runOneNumberOperation(Calculator.Operation.Sin)
     })
     (document.getElementById("cosbutton")!!).addEventListener("click", {
-        singleNumOperationButton(Calculator.Operation.Cos())
+        runOneNumberOperation(Calculator.Operation.Cos)
     })
     (document.getElementById("tanbutton")!!).addEventListener("click", {
-        singleNumOperationButton(Calculator.Operation.Tan())
+        runOneNumberOperation(Calculator.Operation.Tan)
     })
     (document.getElementById("asinbutton")!!).addEventListener("click", {
-        singleNumOperationButton(Calculator.Operation.ASin())
+        runOneNumberOperation(Calculator.Operation.ASin)
     })
     (document.getElementById("acosbutton")!!).addEventListener("click", {
-        singleNumOperationButton(Calculator.Operation.ACos())
+        runOneNumberOperation(Calculator.Operation.ACos)
     })
     (document.getElementById("atanbutton")!!).addEventListener("click", {
-        singleNumOperationButton(Calculator.Operation.ATan())
+        runOneNumberOperation(Calculator.Operation.ATan)
     })
     (document.getElementById("recipbutton")!!).addEventListener("click", {
-        singleNumOperationButton(Calculator.Operation.Reciprocal())
+        runOneNumberOperation(Calculator.Operation.Reciprocal)
     })
     (document.getElementById("sqbutton")!!).addEventListener("click", {
-        doubleNumOperationButton(Calculator.Operation.Exponent(calc.getWorkingNum().toDouble()))
+        setTwoNumberOperation(Calculator.Operation.Exponent(calc.getDisplayVal().toDouble()))
     })
     (document.getElementById("sqrtbutton")!!).addEventListener("click", {
-        singleNumOperationButton(Calculator.Operation.SquareRoot())
+        runOneNumberOperation(Calculator.Operation.SquareRoot)
     })
 
-    //Positive/negative (flip sign) button
+    //Positive/negative (negate) button
     (document.getElementById("pnbutton")!!).addEventListener("click", {
-        calc.flipSign()
+        calc.negate()
         refreshDisplay()
     })
 
