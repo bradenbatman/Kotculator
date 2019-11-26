@@ -6,58 +6,8 @@ class Calculator {
     private var memorySpotsFull = BooleanArray(7)
     private var currentOperation: Operation = Operation.Add(0.0)
 
-    sealed class Operation{
-        class Add(val firstVal: Double) : Operation()
-        class Subtract(val firstVal: Double) : Operation()
-        class Multiply(val firstVal: Double) : Operation()
-        class Divide(val firstVal: Double) : Operation()
-        class Exponent(val firstVal: Double) : Operation()
-        object Sin: Operation()
-        object Cos: Operation()
-        object Tan: Operation()
-        object ASin: Operation()
-        object ACos: Operation()
-        object ATan: Operation()
-        object Reciprocal: Operation()
-        object SquareRoot: Operation()
-    }
-
-    private fun evalCurrentOperation(secondVal:Double, op:Operation) = when(op){
-        is Operation.Add -> {displayVal = "${op.firstVal + secondVal}"}
-        is Operation.Subtract -> {displayVal = "${op.firstVal - secondVal}"}
-        is Operation.Multiply -> {displayVal = "${op.firstVal * secondVal}"}
-        is Operation.Divide -> {displayVal = "${op.firstVal / secondVal}"}
-        is Operation.Exponent -> {displayVal = "${op.firstVal.pow(secondVal)}"}
-        is Operation.Sin -> {displayVal = "${sin(secondVal)}"}
-        is Operation.Cos -> {displayVal = "${cos(secondVal)}"}
-        is Operation.Tan -> {displayVal = "${tan(secondVal)}"}
-        is Operation.ASin -> {displayVal = "${asin(secondVal)}"}
-        is Operation.ACos -> {displayVal = "${acos(secondVal)}"}
-        is Operation.ATan -> {displayVal = "${atan(secondVal)}"}
-        is Operation.Reciprocal -> {displayVal = "${1/secondVal}"}
-        is Operation.SquareRoot -> {displayVal = "${sqrt(secondVal)}"}
-    }
-
-    fun eval(){
-        evalCurrentOperation(displayVal.toDouble(), currentOperation)
-        clearCurrentOperation()
-    }
-
-    fun setCurrentOperation(op: Operation){
-        currentOperation = op
-    }
-
-    private fun clearCurrentOperation(){
-        currentOperation = Operation.Add(0.0)
-    }
-
-    fun clearEntry(){
-        displayVal = "0"
-    }
-
-    fun clear(){
-        clearEntry()
-        clearCurrentOperation()
+    fun getDisplayVal():String{
+        return displayVal
     }
 
     fun isMemorySpotFull(spot:Int):Boolean{
@@ -74,14 +24,59 @@ class Calculator {
         memorySpotsFull[spot]=false
     }
 
-    fun getDisplayVal():String{
-        return displayVal
+    //Operations that involve more than one value have the first value stored when the object is instantiated.
+    sealed class Operation{
+        class Add(val firstVal: Double) : Operation()
+        class Subtract(val firstVal: Double) : Operation()
+        class Multiply(val firstVal: Double) : Operation()
+        class Divide(val firstVal: Double) : Operation()
+        class Exponent(val firstVal: Double) : Operation()
+        object Sin: Operation()
+        object Cos: Operation()
+        object Tan: Operation()
+        object ASin: Operation()
+        object ACos: Operation()
+        object ATan: Operation()
+        object Reciprocal: Operation()
+        object SquareRoot: Operation()
+    }
+
+    //Operation is evaluated based on which type of operation the value is.
+    private fun evalCurrentOperation(secondVal:Double, op:Operation){
+        displayVal = when(op) {
+            is Operation.Add -> { "${op.firstVal + secondVal}" }
+            is Operation.Subtract -> { "${op.firstVal - secondVal}" }
+            is Operation.Multiply -> { "${op.firstVal * secondVal}" }
+            is Operation.Divide -> { "${op.firstVal / secondVal}" }
+            is Operation.Exponent -> { "${op.firstVal.pow(secondVal)}" }
+            is Operation.Sin -> { "${sin(secondVal)}" }
+            is Operation.Cos -> { "${cos(secondVal)}" }
+            is Operation.Tan -> { "${tan(secondVal)}" }
+            is Operation.ASin -> { "${asin(secondVal)}" }
+            is Operation.ACos -> { "${acos(secondVal)}" }
+            is Operation.ATan -> { "${atan(secondVal)}" }
+            is Operation.Reciprocal -> { "${1.0 / secondVal}" }
+            is Operation.SquareRoot -> { "${sqrt(secondVal)}" }
+        }
+    }
+
+    fun setCurrentOperation(op: Operation){
+        currentOperation = op
+    }
+
+    private fun clearCurrentOperation(){
+        currentOperation = Operation.Add(0.0)
+    }
+
+    fun eval(){
+        evalCurrentOperation(displayVal.toDouble(), currentOperation)
+        clearCurrentOperation()
     }
 
     fun enterNextNumber(nextNumber:Int){
         displayVal =
                 //displayVal is replaced with the new number if displayVal is 0, NaN, or Infinity
-                if (displayVal == "0" || displayVal.toDouble().isNaN() || displayVal.toDouble().isInfinite()){
+                if (displayVal == "0" || displayVal.toDoubleOrNull()==null){
                     "$nextNumber"
                 }
                 //displayVal is replaced with the new number and keeps the negative sign if displayVal is -0
@@ -94,12 +89,14 @@ class Calculator {
                 }
     }
 
+    //Adds a decimal if there isn't already one.
     fun enterDecimal(){
         if (!displayVal.contains(".")){
             displayVal = "$displayVal."
         }
     }
 
+    //If the string is negative, it becomes positive, if it is positive, it becomes negative
     fun negate(){
         displayVal =
                 if(displayVal.startsWith("-")){
@@ -108,5 +105,14 @@ class Calculator {
                 else {
                     "-$displayVal"
                 }
+    }
+
+    fun clearEntry(){
+        displayVal = "0"
+    }
+
+    fun clear(){
+        clearEntry()
+        clearCurrentOperation()
     }
 }

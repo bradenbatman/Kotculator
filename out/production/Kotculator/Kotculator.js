@@ -3,13 +3,12 @@ if (typeof kotlin === 'undefined') {
 }
 var Kotculator = function (_, Kotlin) {
   'use strict';
+  var toString = Kotlin.toString;
   var Kind_CLASS = Kotlin.Kind.CLASS;
   var Kind_OBJECT = Kotlin.Kind.OBJECT;
   var toDouble = Kotlin.kotlin.text.toDouble_pdl1vz$;
-  var toString = Kotlin.toString;
   var equals = Kotlin.equals;
-  var isNaN_0 = Kotlin.kotlin.isNaN_yrwdxr$;
-  var isInfinite = Kotlin.kotlin.isInfinite_yrwdxr$;
+  var toDoubleOrNull = Kotlin.kotlin.text.toDoubleOrNull_pdl1vz$;
   var contains = Kotlin.kotlin.text.contains_li3zpu$;
   var startsWith = Kotlin.kotlin.text.startsWith_7epoxm$;
   var Math_0 = Math;
@@ -48,6 +47,20 @@ var Kotculator = function (_, Kotlin) {
     this.memorySpotsFull_0 = Kotlin.booleanArray(7);
     this.currentOperation_0 = new Calculator$Operation$Add(0.0);
   }
+  Calculator.prototype.getDisplayVal = function () {
+    return this.displayVal_0;
+  };
+  Calculator.prototype.isMemorySpotFull_za3lpa$ = function (spot) {
+    return this.memorySpotsFull_0[spot];
+  };
+  Calculator.prototype.setMemorySpot_za3lpa$ = function (spot) {
+    this.memorySpots_0[spot] = this.displayVal_0;
+    this.memorySpotsFull_0[spot] = true;
+  };
+  Calculator.prototype.clearMemorySpot_za3lpa$ = function (spot) {
+    this.displayVal_0 = toString(this.memorySpots_0[spot]);
+    this.memorySpotsFull_0[spot] = false;
+  };
   function Calculator$Operation() {
   }
   function Calculator$Operation$Add(firstVal) {
@@ -229,47 +242,45 @@ var Kotculator = function (_, Kotlin) {
     interfaces: []
   };
   Calculator.prototype.evalCurrentOperation_0 = function (secondVal, op) {
+    var tmp$;
     if (Kotlin.isType(op, Calculator$Operation$Add))
-      this.displayVal_0 = (op.firstVal + secondVal).toString();
+      tmp$ = (op.firstVal + secondVal).toString();
     else if (Kotlin.isType(op, Calculator$Operation$Subtract))
-      this.displayVal_0 = (op.firstVal - secondVal).toString();
+      tmp$ = (op.firstVal - secondVal).toString();
     else if (Kotlin.isType(op, Calculator$Operation$Multiply))
-      this.displayVal_0 = (op.firstVal * secondVal).toString();
+      tmp$ = (op.firstVal * secondVal).toString();
     else if (Kotlin.isType(op, Calculator$Operation$Divide))
-      this.displayVal_0 = (op.firstVal / secondVal).toString();
+      tmp$ = (op.firstVal / secondVal).toString();
     else if (Kotlin.isType(op, Calculator$Operation$Exponent)) {
       var $receiver = op.firstVal;
-      this.displayVal_0 = Math_0.pow($receiver, secondVal).toString();
+      tmp$ = Math_0.pow($receiver, secondVal).toString();
     }
      else if (Kotlin.isType(op, Calculator$Operation$Sin)) {
-      this.displayVal_0 = Math_0.sin(secondVal).toString();
+      tmp$ = Math_0.sin(secondVal).toString();
     }
      else if (Kotlin.isType(op, Calculator$Operation$Cos)) {
-      this.displayVal_0 = Math_0.cos(secondVal).toString();
+      tmp$ = Math_0.cos(secondVal).toString();
     }
      else if (Kotlin.isType(op, Calculator$Operation$Tan)) {
-      this.displayVal_0 = Math_0.tan(secondVal).toString();
+      tmp$ = Math_0.tan(secondVal).toString();
     }
      else if (Kotlin.isType(op, Calculator$Operation$ASin)) {
-      this.displayVal_0 = Math_0.asin(secondVal).toString();
+      tmp$ = Math_0.asin(secondVal).toString();
     }
      else if (Kotlin.isType(op, Calculator$Operation$ACos)) {
-      this.displayVal_0 = Math_0.acos(secondVal).toString();
+      tmp$ = Math_0.acos(secondVal).toString();
     }
      else if (Kotlin.isType(op, Calculator$Operation$ATan)) {
-      this.displayVal_0 = Math_0.atan(secondVal).toString();
+      tmp$ = Math_0.atan(secondVal).toString();
     }
      else if (Kotlin.isType(op, Calculator$Operation$Reciprocal))
-      this.displayVal_0 = (1 / secondVal).toString();
+      tmp$ = (1.0 / secondVal).toString();
     else if (Kotlin.isType(op, Calculator$Operation$SquareRoot)) {
-      this.displayVal_0 = Math_0.sqrt(secondVal).toString();
+      tmp$ = Math_0.sqrt(secondVal).toString();
     }
      else
-      Kotlin.noWhenBranchMatched();
-  };
-  Calculator.prototype.eval = function () {
-    this.evalCurrentOperation_0(toDouble(this.displayVal_0), this.currentOperation_0);
-    this.clearCurrentOperation_0();
+      tmp$ = Kotlin.noWhenBranchMatched();
+    this.displayVal_0 = tmp$;
   };
   Calculator.prototype.setCurrentOperation_jv5b45$ = function (op) {
     this.currentOperation_0 = op;
@@ -277,30 +288,13 @@ var Kotculator = function (_, Kotlin) {
   Calculator.prototype.clearCurrentOperation_0 = function () {
     this.currentOperation_0 = new Calculator$Operation$Add(0.0);
   };
-  Calculator.prototype.clearEntry = function () {
-    this.displayVal_0 = '0';
-  };
-  Calculator.prototype.clear = function () {
-    this.clearEntry();
+  Calculator.prototype.eval = function () {
+    this.evalCurrentOperation_0(toDouble(this.displayVal_0), this.currentOperation_0);
     this.clearCurrentOperation_0();
-  };
-  Calculator.prototype.isMemorySpotFull_za3lpa$ = function (spot) {
-    return this.memorySpotsFull_0[spot];
-  };
-  Calculator.prototype.setMemorySpot_za3lpa$ = function (spot) {
-    this.memorySpots_0[spot] = this.displayVal_0;
-    this.memorySpotsFull_0[spot] = true;
-  };
-  Calculator.prototype.clearMemorySpot_za3lpa$ = function (spot) {
-    this.displayVal_0 = toString(this.memorySpots_0[spot]);
-    this.memorySpotsFull_0[spot] = false;
-  };
-  Calculator.prototype.getDisplayVal = function () {
-    return this.displayVal_0;
   };
   Calculator.prototype.enterNextNumber_za3lpa$ = function (nextNumber) {
     var tmp$;
-    if (equals(this.displayVal_0, '0') || isNaN_0(toDouble(this.displayVal_0)) || isInfinite(toDouble(this.displayVal_0))) {
+    if (equals(this.displayVal_0, '0') || toDoubleOrNull(this.displayVal_0) == null) {
       tmp$ = nextNumber.toString();
     }
      else if (equals(this.displayVal_0, '-0')) {
@@ -325,6 +319,13 @@ var Kotculator = function (_, Kotlin) {
       tmp$ = '-' + this.displayVal_0;
     }
     this.displayVal_0 = tmp$;
+  };
+  Calculator.prototype.clearEntry = function () {
+    this.displayVal_0 = '0';
+  };
+  Calculator.prototype.clear = function () {
+    this.clearEntry();
+    this.clearCurrentOperation_0();
   };
   Calculator.$metadata$ = {
     kind: Kind_CLASS,
