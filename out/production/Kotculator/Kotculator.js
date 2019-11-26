@@ -294,7 +294,7 @@ var Kotculator = function (_, Kotlin) {
   };
   Calculator.prototype.enterNextNumber_za3lpa$ = function (nextNumber) {
     var tmp$;
-    if (equals(this.displayVal_0, '0') || toDoubleOrNull(this.displayVal_0) == null) {
+    if (equals(this.displayVal_0, '0') || toDoubleOrNull(this.displayVal_0) == null || contains(this.displayVal_0, 'NaN') || contains(this.displayVal_0, 'Infinity')) {
       tmp$ = nextNumber.toString();
     }
      else if (equals(this.displayVal_0, '-0')) {

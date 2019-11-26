@@ -76,7 +76,7 @@ class Calculator {
     fun enterNextNumber(nextNumber:Int){
         displayVal =
                 //displayVal is replaced with the new number if displayVal is 0, NaN, or Infinity
-                if (displayVal == "0" || displayVal.toDoubleOrNull()==null){
+                if (displayVal == "0" || displayVal.toDoubleOrNull()==null || displayVal.contains("NaN") || displayVal.contains("Infinity")){
                     "$nextNumber"
                 }
                 //displayVal is replaced with the new number and keeps the negative sign if displayVal is -0
